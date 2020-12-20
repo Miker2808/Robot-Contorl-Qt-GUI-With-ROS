@@ -1,0 +1,365 @@
+MetaInfo {
+    Type {
+        name: "QtQuick.Studio.Effects.RecursiveBlurItem"
+        icon: "images/recursive-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Recursive Blur"
+            category: "Effects"
+            libraryIcon: "images/recursive-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.ThresholdMaskItem"
+        icon: "images/threshold-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Threshold Mask"
+            category: "Effects"
+            libraryIcon: "images/threshold-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.LevelAdjustItem"
+        icon: "images/levels-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Level Adjust"
+            category: "Effects"
+            libraryIcon: "images/levels-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.InnerShadowItem"
+        icon: "images/inner-shadow-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Inner Shadow"
+            category: "Effects"
+            libraryIcon: "images/inner-shadow-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.DisplaceItem"
+        icon: "images/displace-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Displace"
+            category: "Effects"
+            libraryIcon: "images/displace-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.FastBlurItem"
+        icon: "images/fast-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Fast Blur"
+            category: "Effects"
+            libraryIcon: "images/fast-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.GaussianBlurItem"
+        icon: "images/gaussian-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Gaussian Blur"
+            category: "Effects"
+            libraryIcon: "images/gaussian-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.ZoomBlurItem"
+        icon: "images/zoom-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Zoom Blur"
+            category: "Effects"
+            libraryIcon: "images/zoom-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.GlowItem"
+        icon: "images/glow-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Glow"
+            category: "Effects"
+            libraryIcon: "images/glow-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.RadialBlurItem"
+        icon: "images/radial-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Radial Blur"
+            category: "Effects"
+            libraryIcon: "images/radial-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.DesaturationItem"
+        icon: "images/desaturation-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Desaturation"
+            category: "Effects"
+            libraryIcon: "images/desaturation-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.DirectionalBlurItem"
+        icon: "images/directional-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Directional Blur"
+            category: "Effects"
+            libraryIcon: "images/directional-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.ColorOverlayItem"
+        icon: "images/colourize-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Color Overlay"
+            category: "Effects"
+            libraryIcon: "images/colourize-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.DropShadowItem"
+        icon: "images/drop-shadow-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Drop Shadow"
+            category: "Effects"
+            libraryIcon: "images/drop-shadow-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.ColorizeItem"
+        icon: "images/colourize-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Colorize"
+            category: "Effects"
+            libraryIcon: "images/colourize-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.BrightnessContrastItem"
+        icon: "images/brightness-contrast-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Brightness Contrast"
+            category: "Effects"
+            libraryIcon: "images/brightness-contrast-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.GammaAdjustItem"
+        icon: "images/gamma-adjust-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Gamma Adjust"
+            category: "Effects"
+            libraryIcon: "images/gamma-adjust-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.HueSaturationItem"
+        icon: "images/hue-satuartion-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Hue Saturation"
+            category: "Effects"
+            libraryIcon: "images/hue-satuartion-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.MaskedBlurItem"
+        icon: "images/mask-blur-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Masked Blur"
+            category: "Effects"
+            libraryIcon: "images/mask-blur-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+
+    Type {
+        name: "QtQuick.Studio.Effects.OpacityMaskItem"
+        icon: "images/opacity-mask-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Opacity Mask"
+            category: "Effects"
+            libraryIcon: "images/opacity-mask-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Type {
+        name: "QtQuick.Studio.Effects.BlendItem"
+        icon: "images/blend-mode-16px.png"
+
+        Hints {
+            takesOverRenderingOfChildren: true
+        }
+
+        ItemLibraryEntry {
+            name: "Blend"
+            category: "Effects"
+            libraryIcon: "images/blend-mode-24px.png"
+            version: "1.0"
+            requiredImport: "QtQuick.Studio.Effects"
+        }
+    }
+
+    Imports {
+        showTagsForImports: [
+            "QtQuick.Studio.Effects"
+        ]
+    }
+}
