@@ -176,8 +176,7 @@ void BackEnd::updateGUI(){
     }
 
     if (safetyEngaged == true){
-        QString current_safetyImage = getSafetyImageUrl();
-        if (current_safetyImage != "Safety-engaged-pressed.png" or current_safetyImage != "Safety-disengaged-pressed.png"){
+        if (this->isSafetyButtonPressed == false){
             setSafetyImageUrl("Safety-engaged.png");
         }
         setButtonsEnabled(false);
@@ -187,8 +186,7 @@ void BackEnd::updateGUI(){
     }
 
     if (safetyEngaged == false){
-        QString current_safetyImage = getSafetyImageUrl();
-        if (current_safetyImage != "Safety-engaged-pressed.png" or current_safetyImage != "Safety-disengaged-pressed.png"){
+        if (this->isSafetyButtonPressed == false){
             setSafetyImageUrl("Safety-disengaged.png");
         }
 
@@ -258,6 +256,7 @@ void BackEnd::onLeftButton_Released(){
 }
 
 void BackEnd::onSafetyButton_Pressed(){
+    isSafetyButtonPressed = true;
     QString current_SafetyImage = getSafetyImageUrl();
     if (current_SafetyImage == "Safety-engaged.png"){
         setSafetyImageUrl("Safety-engaged-pressed.png");
@@ -268,8 +267,8 @@ void BackEnd::onSafetyButton_Pressed(){
 }
 
 void BackEnd::onSafetyButton_Released(){
+    isSafetyButtonPressed = false;
     std_msgs::Bool safety_trigger;
-
     if (qnode.safety_master == false){
         safety_trigger.data = true;
         qnode.safety_trigger_pub.publish(safety_trigger);

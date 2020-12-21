@@ -46,11 +46,14 @@ Rectangle {
     signal cancelRouteButtonClicked()
     signal zeroPosButtonClicked()
 
+
+
+
     Image {
         property int ui_opacity: backend.SafetyTriggerOpacity  //opacity comes as int from 0 to 100 from backend
         id: uiOverlayBlue
-        x: -83
-        y: 13
+        x: -78
+        y: 17
         opacity: 1
         anchors.fill: parent
         source: "UI-Overlay-blue.png"
@@ -71,8 +74,8 @@ Rectangle {
     Image {
         property int ui_opacity: 100 - backend.SafetyTriggerOpacity
         id: uIOverlayRed
-        x: -74
-        y: 22
+        x: -78
+        y: 17
         anchors.fill: parent
         source: "UI-Overlay-red.png"
         antialiasing: false
@@ -106,10 +109,10 @@ Rectangle {
             id: motorRightGaugeImageBlue
             x: -45
             y: 16
-            opacity: gauge_opacity
             source: "powerClock-blue.png"
             mirror: false
             fillMode: Image.PreserveAspectFit
+            opacity: gauge_opacity / 100
 
             Behavior on gauge_opacity {
                 NumberAnimation{
@@ -1235,6 +1238,7 @@ Rectangle {
                 y: 418
                 width: 183
                 height: 38
+                enabled: true
 
                 onClicked: {
                     root.startRouteButtonClicked()
@@ -1396,6 +1400,38 @@ Rectangle {
 
     }
 
+    Image {
+        property int startScreenOpacity: 100  //opacity comes as int from 0 to 100 from backend
+        property bool enabled_property: true
+        enabled: enabled_property
+        id: startScreenOverlay
+        x: -78
+        y: 17
+        opacity: startScreenOpacity / 100
+        anchors.fill: parent
+        source: "StartScreen.png"
+        anchors.bottomMargin: 0
+        mirror: false
+        anchors.leftMargin: 0
+        anchors.rightMargin: 0
+        fillMode: Image.PreserveAspectFit
+        anchors.topMargin: 0
+        SequentialAnimation on startScreenOpacity{
+            PauseAnimation { duration: 2000 }
+            NumberAnimation {
+                duration: 1000
+                to: 0
+                //easing.bezierCurve: [0.445, 0.05, 0.55, 0.95, 1, 1]
+                easing.bezierCurve: [1, 0, 1, -0.8]
+                onRunningChanged: {
+                    enabled_property = false
+                }
+
+            }
+        }
+
+    }
+
     Timeline {
         id: timeline
         animations: [
@@ -1417,6 +1453,7 @@ Rectangle {
 
 
 
+
 }
 
 
@@ -1426,6 +1463,6 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.33000001311302185}D{i:82}
+    D{i:0;formeditorZoom:0.33000001311302185}D{i:83}
 }
 ##^##*/
