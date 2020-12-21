@@ -38,26 +38,26 @@ HEADERS += \
 # all ROS dependencies (dynamically linked to default ros installation location)
 #unix:!macx: LIBS += -L$$PWD/../../../../opt/ros/melodic/lib
 unix:!macx: LIBS += -L"/opt/ros/melodic/lib"
-LIBS += -L"/opt/ros/melodic/lib" -lroscpp
-LIBS += -L"/opt/ros/melodic/lib" -lrosconsole
-LIBS += -L"/opt/ros/melodic/lib" -lroscpp_serialization
-LIBS += -L"/opt/ros/melodic/lib" -lxmlrpcpp
-LIBS += -L"/opt/ros/melodic/lib" -lrostime
-LIBS += -L"/opt/ros/melodic/lib" -lcpp_common
-LIBS += -L"/opt/ros/melodic/lib" -lrosconsole_log4cxx
-LIBS += -L"/opt/ros/melodic/lib" -lrosconsole_backend_interface
+LIBS += -L"/opt/ros/noetic/lib" -lroscpp
+LIBS += -L"/opt/ros/noetic/lib" -lrosconsole
+LIBS += -L"/opt/ros/noetic/lib" -lroscpp_serialization
+LIBS += -L"/opt/ros/noetic/lib" -lxmlrpcpp
+LIBS += -L"/opt/ros/noetic/lib" -lrostime
+LIBS += -L"/opt/ros/noetic/lib" -lcpp_common
+LIBS += -L"/opt/ros/noetic/lib" -lrosconsole_log4cxx
+LIBS += -L"/opt/ros/noetic/lib" -lrosconsole_backend_interface
 
 
 #INCLUDEPATH += $$PWD/../../../../opt/ros/melodic/include # relative paths
 #DEPENDPATH += $$PWD/../../../../opt/ros/melodic/include
 
-INCLUDEPATH += "/opt/ros/melodic/include"
-DEPENDPATH += "/opt/ros/melodic/include"
+INCLUDEPATH += "/opt/ros/noetic/include"
+DEPENDPATH += "/opt/ros/noetic/include"
 
 
 DESTDIR = $$PWD/build # compiled application will be written here!
 
-# include ros using pkgconfig (not recommended)
+# include ros using pkgconfig (less recommended)
 #unix: CONFIG += link_pkgconfig
 #unix: PKGCONFIG += roscpp
 
