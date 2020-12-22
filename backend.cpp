@@ -114,21 +114,7 @@ void BackEnd::updateGUI(){
     int left_motor_abs = std::abs(right_motor_val);
     bool safetyEngaged = qnode.safety_master;
     int headingValue = qnode.heading;
-    bool self_driving = qnode.self_driving;
-    int relative_bearing = qnode.relative_bearing;
-    int target_bearing = qnode.target_bearing;
-    int target_distance = qnode.target_distance;
-    int path_passed = qnode.path_passed;
-    QString target_cords = toQString(qnode.target_cords);
     bool robot_connection = qnode.connection_robot;
-
-
-    // map info values - used for visualization
-    setRelativeBearingVal(QString::number(relative_bearing));
-    setTargetBearingVal(QString::number(target_bearing));
-    setTargetDistanceVal(QString::number(target_distance));
-    setTargetCordsVal(target_cords);
-    setPathPassedVal(QStringLiteral("%1 %").arg(path_passed));
 
     // gps vals needed as FLOATS for the map (used for calculation rather than visualization)
     setGPSLatVal(qnode.latitude);
@@ -180,34 +166,19 @@ void BackEnd::updateGUI(){
             setSafetyImageUrl("Safety-engaged.png");
         }
         setButtonsEnabled(false);
+        setButtonsOpacity(0);
         setSafetyTriggerOpacity(0);
         setPanelSafetyVal("ENGAGED");
-        setButtonsOpacity(0);
     }
 
     if (safetyEngaged == false){
         if (this->isSafetyButtonPressed == false){
             setSafetyImageUrl("Safety-disengaged.png");
         }
-
-        setSafetyTriggerOpacity(100);
-        setPanelSafetyVal("DISENGAGED");
-        if (self_driving == false){
-            setButtonsEnabled(true);
-            setButtonsOpacity(100);
-        }
-    }
-
-    if (self_driving == true){
-        setButtonsEnabled(false);
-        setButtonsOpacity(0);
-        setDrivingInfoOpacity(100);
-    }
-
-    if (self_driving == false and safetyEngaged == false){
         setButtonsEnabled(true);
         setButtonsOpacity(100);
-        setDrivingInfoOpacity(0);
+        setSafetyTriggerOpacity(100);
+        setPanelSafetyVal("DISENGAGED");
     }
 
     if (robot_connection == false){
@@ -354,8 +325,6 @@ void BackEnd::onStartRouteButton_Clicked(){
     qnode.path_array_pub.publish(path_msg);
     setButtonsEnabled(false);
     setButtonsOpacity(0);
-    setDrivingInfoOpacity(100);
-
 }
 
 void BackEnd::onZeroPosButton_Clicked(){
@@ -373,7 +342,6 @@ void BackEnd::onCancelRouteButton_Clicked(){
         setButtonsEnabled(true);
         setButtonsOpacity(100);
     }
-    setDrivingInfoOpacity(0);
     publishToMotors(0, 0);
 
 }

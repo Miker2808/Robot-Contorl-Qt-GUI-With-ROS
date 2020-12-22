@@ -33,12 +33,6 @@ public:
     void motor_leftCallBack(const std_msgs::Int64::ConstPtr& msg);
     void motor_rightCallBack(const std_msgs::Int64::ConstPtr& msg);
     void gpsCallBack(const sensor_msgs::NavSatFix::ConstPtr& msg);
-    void self_drivingCallBack(const std_msgs::Bool::ConstPtr& msg);
-    void relative_bearingCallBack(const std_msgs::Int64::ConstPtr& msg);
-    void target_bearingCallBack(const std_msgs::Int64::ConstPtr& msg);
-    void target_distanceCallBack(const std_msgs::Int64::ConstPtr& msg);
-    void path_passedCallBack(const std_msgs::Int64::ConstPtr& msg);
-    void target_cordsCallBack(const std_msgs::String::ConstPtr& msg); // Notice! its a STRING
     void robot_connectionCallBack(const std_msgs::Bool::ConstPtr& msg);
     void battery_voltageCallBack(const std_msgs::Float64::ConstPtr& msg);
     void pitchCallBack(const std_msgs::Int64::ConstPtr& msg);
@@ -60,12 +54,6 @@ public:
     float latitude = 32.086874;
     float longitude = 34.870803;
     int sat_count = 0;
-    bool self_driving = false;
-    int target_bearing = 0;
-    int relative_bearing = 0;
-    std::string target_cords = "NODATA";
-    int path_passed = 0;
-    int target_distance = 0;
     bool connection_robot = false;
     float battery_voltage = 0.0;
     int pitch = 0;
@@ -84,12 +72,6 @@ private:
     ros::Subscriber motor_left_sub;
     ros::Subscriber motor_right_sub;
     ros::Subscriber gps_sub;
-    ros::Subscriber self_driving_sub;
-    ros::Subscriber relative_bearing_sub;
-    ros::Subscriber target_bearing_sub;
-    ros::Subscriber target_distance_sub;
-    ros::Subscriber target_cords_sub;
-    ros::Subscriber path_passed_sub;
     ros::Subscriber robot_connection_sub;
     ros::Subscriber battery_voltage_sub;
     ros::Subscriber pitch_sub;

@@ -49,12 +49,6 @@ class BackEnd : public QObject
     Q_PROPERTY(float GPSLatVal READ getGPSLatVal WRITE setGPSLatVal NOTIFY GPSLatValChanged)
     Q_PROPERTY(float GPSLongVal READ getGPSLongVal WRITE setGPSLongVal NOTIFY GPSLongValChanged)
     Q_PROPERTY(int ButtonsOpacity READ getButtonsOpacity WRITE setButtonsOpacity NOTIFY ButtonsOpacityChanged)
-    Q_PROPERTY(int DrivingInfoOpacity READ getDrivingInfoOpacity WRITE setDrivingInfoOpacity NOTIFY DrivingInfoOpacityChanged)
-    Q_PROPERTY(QString RelativeBearingVal READ getRelativeBearingVal WRITE setRelativeBearingVal NOTIFY RelativeBearingValChanged)
-    Q_PROPERTY(QString TargetBearingVal READ getTargetBearingVal WRITE setTargetBearingVal NOTIFY TargetBearingValChanged)
-    Q_PROPERTY(QString TargetDistanceVal READ getTargetDistanceVal WRITE setTargetDistanceVal NOTIFY TargetDistanceValChanged)
-    Q_PROPERTY(QString TargetCordsVal READ getTargetCordsVal WRITE setTargetCordsVal NOTIFY TargetCordsValChanged)
-    Q_PROPERTY(QString PathPassedVal READ getPathPassedVal WRITE setPathPassedVal NOTIFY PathPassedValChanged)
     Q_PROPERTY(bool StartRouteButtonEnabled READ StartRouteButtonEnabled WRITE setStartRouteButtonEnabled NOTIFY StartRouteButtonEnabledChanged)
     // Q_PROPERTY generates using "refractor" additionaly 3 methods and one object for each property, everything below, is automatically generated
     // What is automatically generated is kept at the bottom, manually generated at top. You'll see a comment for automatically generated methods.
@@ -141,18 +135,6 @@ public:
     float getGPSLongVal() const { return m_GPSLongVal; }
 
     int getButtonsOpacity() const { return m_ButtonsOpacity; }
-
-    int getDrivingInfoOpacity() const { return m_DrivingInfoOpacity; }
-
-    QString getRelativeBearingVal() const { return m_RelativeBearingVal; }
-
-    QString getTargetBearingVal() const { return m_TargetBearingVal; }
-
-    QString getTargetDistanceVal() const { return m_TargetDistanceVal; }
-
-    QString getTargetCordsVal() const { return m_TargetCordsVal; }
-
-    QString getPathPassedVal() const {  return m_PathPassedVal; }
 
     bool StartRouteButtonEnabled() const { return m_StartRouteButtonEnabled; }
 
@@ -494,60 +476,6 @@ public slots:
         emit ButtonsOpacityChanged(m_ButtonsOpacity);
     }
 
-    void setDrivingInfoOpacity(int DrivingInfoOpacity)
-    {
-        if (m_DrivingInfoOpacity == DrivingInfoOpacity)
-            return;
-
-        m_DrivingInfoOpacity = DrivingInfoOpacity;
-        emit DrivingInfoOpacityChanged(m_DrivingInfoOpacity);
-    }
-
-    void setRelativeBearingVal(QString RelativeBearingVal)
-    {
-        if (m_RelativeBearingVal == RelativeBearingVal)
-            return;
-
-        m_RelativeBearingVal = RelativeBearingVal;
-        emit RelativeBearingValChanged(m_RelativeBearingVal);
-    }
-
-    void setTargetBearingVal(QString TargetBearingVal)
-    {
-        if (m_TargetBearingVal == TargetBearingVal)
-            return;
-
-        m_TargetBearingVal = TargetBearingVal;
-        emit TargetBearingValChanged(m_TargetBearingVal);
-    }
-
-    void setTargetDistanceVal(QString TargetDistanceVal)
-    {
-        if (m_TargetDistanceVal == TargetDistanceVal)
-            return;
-
-        m_TargetDistanceVal = TargetDistanceVal;
-        emit TargetDistanceValChanged(m_TargetDistanceVal);
-    }
-
-    void setTargetCordsVal(QString TargetCordsVal)
-    {
-        if (m_TargetCordsVal == TargetCordsVal)
-            return;
-
-        m_TargetCordsVal = TargetCordsVal;
-        emit TargetCordsValChanged(m_TargetCordsVal);
-    }
-
-    void setPathPassedVal(QString PathPassedVal)
-    {
-        if (m_PathPassedVal == PathPassedVal)
-            return;
-
-        m_PathPassedVal = PathPassedVal;
-        emit PathPassedValChanged(m_PathPassedVal);
-    }
-
     void setStartRouteButtonEnabled(bool StartRouteButtonEnabled)
     {
         if (m_StartRouteButtonEnabled == StartRouteButtonEnabled)
@@ -596,18 +524,6 @@ signals:
     void GPSLatValChanged(float GPSLatVal);
     void GPSLongValChanged(float GPSLongVal);
     void ButtonsOpacityChanged(int ButtonsOpacity);
-    void DrivingInfoOpacityChanged(int DrivingInfoOpacity);
-
-    void RelativeBearingValChanged(QString RelativeBearingVal);
-
-    void TargetBearingValChanged(QString TargetBearingVal);
-
-    void TargetDistanceValChanged(QString TargetDistanceVal);
-
-    void TargetCordsValChanged(QString TargetCordsVal);
-
-    void PathPassedValChanged(QString PathPassedVal);
-
     void StartRouteButtonEnabledChanged(bool StartRouteButtonEnabled);
 
 private:
@@ -655,12 +571,6 @@ private:
     float m_GPSLatVal;
     float m_GPSLongVal;
     int m_ButtonsOpacity;
-    int m_DrivingInfoOpacity;
-    QString m_RelativeBearingVal;
-    QString m_TargetBearingVal;
-    QString m_TargetDistanceVal;
-    QString m_TargetCordsVal;
-    QString m_PathPassedVal;
     bool m_StartRouteButtonEnabled;
 };
 

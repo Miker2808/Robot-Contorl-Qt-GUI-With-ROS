@@ -34,12 +34,6 @@ bool QNode::init() {
     motor_left_sub = node.subscribe("/robot/motor_left", 5, &QNode::motor_leftCallBack, this);
     motor_right_sub = node.subscribe("/robot/motor_right", 5, &QNode::motor_rightCallBack, this);
     gps_sub = node.subscribe("/robot/gps", 5, &QNode::gpsCallBack, this);
-    self_driving_sub = node.subscribe("/robot/self_driving", 5, &QNode::self_drivingCallBack, this);
-    relative_bearing_sub = node.subscribe("/robot/relative_bearing", 5, &QNode::relative_bearingCallBack, this);
-    target_bearing_sub = node.subscribe("/robot/target_bearing", 5, &QNode::target_bearingCallBack, this);
-    target_distance_sub = node.subscribe("/robot/target_distance", 5, &QNode::target_distanceCallBack, this);
-    path_passed_sub = node.subscribe("/robot/path_passed", 5, &QNode::path_passedCallBack, this);
-    target_cords_sub = node.subscribe("/robot/target_cords", 5, &QNode::target_cordsCallBack, this);
     robot_connection_sub = node.subscribe("/robot/connection", 2, &QNode::robot_connectionCallBack, this);
     battery_voltage_sub = node.subscribe("/robot/battery_voltage", 5, &QNode::battery_voltageCallBack, this);
     pitch_sub = node.subscribe("/robot/imu/pitch", 5, &QNode::pitchCallBack, this);
@@ -104,36 +98,6 @@ void QNode::gpsCallBack(const sensor_msgs::NavSatFix::ConstPtr &msg){
     this->latitude = msg->latitude;
     this->longitude = msg->longitude;
     this->sat_count = msg->status.service;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::self_drivingCallBack(const std_msgs::Bool::ConstPtr &msg){
-    this->self_driving = msg->data;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::relative_bearingCallBack(const std_msgs::Int64::ConstPtr &msg){
-    this->relative_bearing = msg->data;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::target_bearingCallBack(const std_msgs::Int64::ConstPtr &msg){
-    this->target_bearing = msg->data;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::target_distanceCallBack(const std_msgs::Int64::ConstPtr &msg){
-    this->target_distance = msg->data;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::target_cordsCallBack(const std_msgs::String::ConstPtr &msg){
-    this->target_cords = msg->data;
-    Q_EMIT msgSubscribed();
-}
-
-void QNode::path_passedCallBack(const std_msgs::Int64::ConstPtr &msg){
-    this->path_passed = msg->data;
     Q_EMIT msgSubscribed();
 }
 
