@@ -218,6 +218,14 @@ void BackEnd::updateGUI(){
         setPanelConnectVal("ONLINE");
     }
 
+    if (robot_connection == false or safetyEngaged == true){
+        setStartRouteButtonEnabled(false);
+    }
+
+    if (robot_connection == true and safetyEngaged == false){
+        setStartRouteButtonEnabled(true);
+    }
+
 
 }
 

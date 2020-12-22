@@ -57,8 +57,8 @@ public:
         // Sub messages:
     bool safety_master = true; // safety master to tell if motor lock is engaged
     int heading = 0; // value of heading coming from the IMU
-    float latitude = 32.046874;
-    float longitude = 34.860803;
+    float latitude = 32.086874;
+    float longitude = 34.870803;
     int sat_count = 0;
     bool self_driving = false;
     int target_bearing = 0;

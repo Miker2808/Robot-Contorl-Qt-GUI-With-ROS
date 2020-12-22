@@ -63,11 +63,11 @@ void QNode::run() {
     ros::Rate loop_rate(10); // too fast loop rate crashed the GUI
     std::cout << "Node is running." << std::endl;
     while (ros::ok()){
-        this->no_connection_cycle_counter += 1;
-        std_msgs::Bool connection_msg;
-        connection_msg.data = true;
-        gui_connection_pub.publish(connection_msg);
-
+        this->no_connection_cycle_counter += 1;     // ros will constantly check if "robot/connection" topic is publishing true
+        std_msgs::Bool connection_msg;              // if it doesn't happend withink 10 iteration (which is less than a sec) it'll set itself as 'no connection'
+        connection_msg.data = true;                 // to avoid it, make a node on the robot that constantly publishes true to the specified topic
+        gui_connection_pub.publish(connection_msg); // additionally, the gui will publish true to "gui_connection" topic, to let the robot know it reads.
+                                                    // you can remove this section if you dont need your robot to know it has connection.
         if (no_connection_cycle_counter > 10){
             this->connection_robot = false;
             Q_EMIT msgSubscribed();
@@ -82,20 +82,20 @@ void QNode::run() {
 
 void QNode::safetyCallBack(const std_msgs::Bool::ConstPtr &msg){// done
     this->safety_master = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT msgSubscribed(); // tells the "UpdateGUI" to update the new published value
 }
 
-void QNode::headingCallBack(const std_msgs::Int64::ConstPtr &msg){// done
+void QNode::headingCallBack(const std_msgs::Int64::ConstPtr &msg){
     this->heading = msg->data;
     Q_EMIT msgSubscribed();
 }
 
-void QNode::motor_leftCallBack(const std_msgs::Int64::ConstPtr &msg){// done
+void QNode::motor_leftCallBack(const std_msgs::Int64::ConstPtr &msg){
     this->motor_left = msg->data;
     Q_EMIT msgSubscribed();
 }
 
-void QNode::motor_rightCallBack(const std_msgs::Int64::ConstPtr &msg){// done
+void QNode::motor_rightCallBack(const std_msgs::Int64::ConstPtr &msg){
     this->motor_right = msg->data;
     Q_EMIT msgSubscribed();
 }

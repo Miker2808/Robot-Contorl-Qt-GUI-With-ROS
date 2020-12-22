@@ -1134,8 +1134,8 @@ Rectangle {
             fillMode: Image.PreserveAspectFit
 
             Map {
-                property real latitude: 32.046874
-                property real longitude: 34.860803
+                property real latitude: 32.086874
+                property real longitude: 34.870803
                 property bool mapEnabled: backend.MapEnabled
                 property MapCircle circle
                 x: 31
@@ -1233,12 +1233,13 @@ Rectangle {
             }
 
             MouseArea {
+                property bool enable_button: backend.StartRouteButtonEnabled
                 id: startRouteButton
                 x: 396
                 y: 418
                 width: 183
                 height: 38
-                enabled: true
+                enabled: enable_button
 
                 onClicked: {
                     root.startRouteButtonClicked()
