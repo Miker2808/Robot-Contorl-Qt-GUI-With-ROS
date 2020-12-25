@@ -47,13 +47,8 @@ If you are lost, you can always reset the map to your robot using "Reset Pos" bu
 
 ![Map Dispaly Demo](https://s8.gifyu.com/images/map_display_demo.gif)
 
-**Note: The gui won't let you to publish the list if your gui got Safety as 'Engaged' and Connection as 'No Connection'. you must lift your safety
-mode and make sure you got a connection to publish the list!**
-
-**Please check the documentation inside the source code for more information**
-
 ## Requirements
-To successfuly compile the project you need few things.
+To successfuly compile the project you need to set few things.
 
 * Ubuntu specified in the branch name
 * ROS installed in default directory of the version specified in the branch name
@@ -62,14 +57,14 @@ To successfuly compile the project you need few things.
 **Qt 6.0.0 is not supported due to many libraries that are excluded from this version.**
 
 ## Installation/Compilation
-For successful compilation it is recommended to do a few actions before building the project.
+For successful compilation, it is recommended to do few actions before building the project.
 1. Open the project using **File** -> **Open Project** -> {**_navigate the .pro file_**}
 2. Clean project using  **Build** -> **Clean All Projects for All Configurations**
 3. run qmake using **Build** -> **Run qmake**
 4. Finally, build the projects. 
 
 If everything is done correctly the project should buld right away without errors. Please note that the GUI is using qmake for compilation
-and its using the ROS and Qt dynamic libraries for compilation, so you cannot just ship the buid file without the libraries.
+and its using the ROS and Qt dynamic libraries for compilation, so you cannot just ship the build file without the libraries.
 You can ease with shipment by statically linking the Qt Libraries if you wish to.
 
-
+**All the resources and art were designed and made by me**
