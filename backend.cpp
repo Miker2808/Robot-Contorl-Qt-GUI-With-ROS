@@ -188,14 +188,15 @@ void BackEnd::updateGUI(){
     if (robot_connection == true){
         setPanelConnectVal("ONLINE");
     }
+    //disabled, so clicking "startRouteButton" will publish route even without safety and connnection
+    // enabling these lines, will make so the "startRoute Button" will not work unless connection is set as true and safety is false!
+//    if (robot_connection == false or safetyEngaged == true){
+//        setStartRouteButtonEnabled(false);
+//    }
 
-    if (robot_connection == false or safetyEngaged == true){
-        setStartRouteButtonEnabled(false);
-    }
-
-    if (robot_connection == true and safetyEngaged == false){
-        setStartRouteButtonEnabled(true);
-    }
+//    if (robot_connection == true and safetyEngaged == false){
+//        setStartRouteButtonEnabled(true);
+//    }
 
 
 }
@@ -301,7 +302,7 @@ void BackEnd::onCoordinateValueClicked(const QString &latitude, const QString &l
     double num_lat = latitude.toDouble();
     double num_long = longitude.toDouble();
     QGeoCoordinate coordinate;
-    coordinate.setAltitude(25);
+    coordinate.setAltitude(1);
     coordinate.setLatitude(num_lat);
     coordinate.setLongitude(num_long);
     selected_path.addCoordinate(coordinate);

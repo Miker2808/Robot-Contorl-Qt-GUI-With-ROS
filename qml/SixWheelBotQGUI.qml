@@ -1134,8 +1134,8 @@ Rectangle {
             fillMode: Image.PreserveAspectFit
 
             Map {
-                property real latitude: 32.086874
-                property real longitude: 34.870803
+                property real latitude: 45.703547
+                property real longitude: 21.302172
                 property bool mapEnabled: backend.MapEnabled
                 property MapCircle circle
                 x: 31
@@ -1153,7 +1153,7 @@ Rectangle {
                 anchors.topMargin: 59
                 activeMapType: map.supportedMapTypes[1]
                 zoomLevel: 17
-                center: QtPositioning.coordinate(32.046874, 34.860803) // init values
+                center: QtPositioning.coordinate(45.703547, 21.302172) // init values
                 plugin: Plugin {
                     name: 'esri';
                 }
