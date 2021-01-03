@@ -270,6 +270,9 @@ void BackEnd::onMainPanelButton_Clicked(){
     setMapPanelOpacity(0);
     setSliderEnabled(true);
     setMapEnabled(false);
+    setStartRouteButtonEnabled(false);
+    setZeroPosButtonEnabled(false);
+    setCancelRouteButtonEnabled(false);
 }
 
 void BackEnd::onMapPanelButton_Clicked(){
@@ -279,6 +282,9 @@ void BackEnd::onMapPanelButton_Clicked(){
     setMapPanelOpacity(100);
     setMapEnabled(true);
     setSliderEnabled(false);
+    setStartRouteButtonEnabled(true);
+    setZeroPosButtonEnabled(true);
+    setCancelRouteButtonEnabled(true);
 }
 
 void BackEnd::onCompPanelButton_Clicked(){
@@ -288,6 +294,9 @@ void BackEnd::onCompPanelButton_Clicked(){
     setEmptyPanelOpacity(100);
     setSliderEnabled(false);
     setMapEnabled(false);
+    setStartRouteButtonEnabled(false);
+    setZeroPosButtonEnabled(false);
+    setCancelRouteButtonEnabled(false);
 }
 
 void BackEnd::onSpeedSlider_ValueChanged(const int &value){
@@ -320,16 +329,16 @@ void BackEnd::onCoordinateValueClicked(const QString &latitude, const QString &l
 }
 
 void BackEnd::onStartRouteButton_Clicked(){
-    //std::cout << "StartRouteClicked" << std::endl;
     std_msgs::String path_msg;
     path_msg.data = selected_path_str;
     qnode.path_array_pub.publish(path_msg);
     setButtonsEnabled(false);
     setButtonsOpacity(0);
+//    std::cout << "StartRouteClicked" << std::endl;
 }
 
 void BackEnd::onZeroPosButton_Clicked(){
-    //std::cout << "ZeroPosClicked" << std::endl;
+//    std::cout << "ZeroPosClicked" << std::endl;
 }
 
 void BackEnd::onCancelRouteButton_Clicked(){

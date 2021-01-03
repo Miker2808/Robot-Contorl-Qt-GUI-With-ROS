@@ -1204,11 +1204,13 @@ Rectangle {
             }
 
             MouseArea {
+                property bool enable_button: backend.CancelRouteButtonEnabled
                 id: cancelRouteButton
                 x: 18
                 y: 418
                 width: 183
                 height: 38
+                enabled: enable_button
 
                 onClicked: {
                     root.cancelRouteButtonClicked()
@@ -1218,11 +1220,13 @@ Rectangle {
             }
 
             MouseArea {
+                property bool enable_button: backend.ZeroPosButtonEnabled
                 id: zeroPosButton
                 x: 207
                 y: 418
                 width: 183
                 height: 38
+                enabled: enable_button
 
                 onClicked: {
                     root.zeroPosButtonClicked()
@@ -1316,6 +1320,6 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.33000001311302185}D{i:83}
+    D{i:0;formeditorZoom:0.33000001311302185}D{i:72}
 }
 ##^##*/
