@@ -10,7 +10,7 @@ The GUI is developed using Qt on C++ with QtQuick. The GUI is integrated with RO
 The GUI allows dynamic animated shifting between safety modes, the GUI subscribes to a safety topic and changes visually to depending on the safety mode.
 When safety is engaged the buttons are disabled and will fade away. Additionally the GUI contains a safety button to manually enable and disable the safety mode
 
-![Safety Demo](https://s8.gifyu.com/images/safety_demo.gif)
+![Safety Demo](https://i.imgur.com/NIrsiO5.gif)
 
 ### Buttons for 2D motion control
 The GUI includes a set of buttons to control the robot using a mouse. The features allows to take the full control of the GUI using only a mouse.
