@@ -1,124 +1,111 @@
 #include "qnode.h"
-#include <ros/ros.h>
-#include <std_msgs/String.h>
-#include <std_msgs/Int16.h>
-#include <std_msgs/Bool.h>
-#include <string>
+#include <iostream>
 
-QNode::QNode(int argc, char** argv) :
-    init_argc(argc),
-    init_argv(argv)
+
+QNode::QNode(int argc, char** argv, QObject *parent) : QObject(parent)
 {
 
+    // Init ROS2
+    rclcpp::init(argc, argv);
+
+    // Create a static executor - faster but doesn't allow creating nodes during runtime
+    // Use MultiThreadedExecutor for runtime node creation.
+    rclcpp::executors::StaticSingleThreadedExecutor::SharedPtr rosExecutor;
+    rosExecutor = std::make_shared<rclcpp::executors::StaticSingleThreadedExecutor>();
+    m_RosNode = rclcpp::Node::make_shared("RobotGuiNode");
+    rosExecutor->add_node(m_RosNode);
+
+    // Create the required publishers, please note the ROS2 feature: QoS
+    // by default we use the SystemDefaultQoS which is similar to ros1 tcp style.
+    // If you want UDP data for imaging or unreliable network like RF use "rclcpp::SensorDataQoS()" instead.
+    motorLeft_Pub = m_RosNode->create_publisher<std_msgs::msg::Int32>("/robot/motor_left", rclcpp::SystemDefaultsQoS());
+    motorRight_Pub = m_RosNode->create_publisher<std_msgs::msg::Int32>("/robot/motor_right", rclcpp::SystemDefaultsQoS());
+    safetyTrigger_Pub = m_RosNode->create_publisher<std_msgs::msg::Bool>("/robot/safety_master", rclcpp::SystemDefaultsQoS());
+    pathList_Pub = m_RosNode->create_publisher<std_msgs::msg::String>("/robot/path_array", rclcpp::SystemDefaultsQoS());
+    guiConnection_Pub = m_RosNode->create_publisher<std_msgs::msg::Bool>("/robot/gui_connection", rclcpp::SystemDefaultsQoS());
+
+    // assign subscriptions
+    m_Safety_Sub = m_RosNode->create_subscription<std_msgs::msg::Bool>("/robot/safety_master",
+                                                                   rclcpp::SystemDefaultsQoS(),
+                                                                   std::bind(&QNode::m_Safety_Callback,this,std::placeholders::_1));
+    m_Heading_Sub = m_RosNode->create_subscription<std_msgs::msg::Int32>("/robot/imu/heading",
+                                                                   rclcpp::SystemDefaultsQoS(),
+                                                                   std::bind(&QNode::m_Heading_Callback,this,std::placeholders::_1));
+    m_MotorLeft_Sub = m_RosNode->create_subscription<std_msgs::msg::Int32>("/robot/motor_left",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_MotorLeft_Callback,this,std::placeholders::_1));
+    m_MotorRight_Sub = m_RosNode->create_subscription<std_msgs::msg::Int32>("/robot/motor_right",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_MotorRight_Callback,this,std::placeholders::_1));
+    m_GPS_Sub = m_RosNode->create_subscription<sensor_msgs::msg::NavSatFix>("/robot/gps",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_GPS_Callback,this,std::placeholders::_1));
+    m_RobotConnection_Sub = m_RosNode->create_subscription<std_msgs::msg::Bool>("/robot/connection",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_RobotConnection_Callback,this,std::placeholders::_1));
+    m_BatteryVoltage_sub = m_RosNode->create_subscription<std_msgs::msg::Float32>("/robot/battery_voltage",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_BatteryVoltage_Callback,this,std::placeholders::_1));
+    m_Pitch_Sub = m_RosNode->create_subscription<std_msgs::msg::Int32>("/robot/imu/pitch",
+                                                                    rclcpp::SystemDefaultsQoS(),
+                                                                    std::bind(&QNode::m_Pitch_Callback,this,std::placeholders::_1));
+    m_Roll_Sub = m_RosNode->create_subscription<std_msgs::msg::Int32>("/robot/imu/roll",
+                                                                     rclcpp::SystemDefaultsQoS(),
+                                                                     std::bind(&QNode::m_Roll_Callback,this,std::placeholders::_1));
+
+
+    // place the spin of ROS2 (which is a blocking infinite loop) in a seperate thread and detach it
+    // Unlike ROS1, we use std::thread for threading instead of the QThread
+    // Might return to QThread in the future if I'll see game changing flaws.
+    std::thread executor_thread(std::bind(&rclcpp::executors::StaticSingleThreadedExecutor::spin, rosExecutor));
+    executor_thread.detach();
 }
 
-QNode::~QNode(){
-    if(ros::isStarted()){
-        ros::shutdown();
-    }
-    wait();
-}
-
-bool QNode::init() {
-    ros::init(init_argc, init_argv, "RobotGUI"); // internal ROS method to start a node named "RobotGUI"
-
-    if ( !ros::master::check()) { // checks if rosmaster is online, gui wont start without a ros running.
-        //system("gnome-terminal -- roscore"); // used to run roscore from within the gui (not recommended)
-        return false; // disable line if previous line is enabled
-    }
-    ros::start();
-    ros::NodeHandle node;
-    // subscribing objects
-    safety_sub = node.subscribe("/robot/safety_master", 5, &QNode::safetyCallBack, this);
-    heading_sub = node.subscribe("/robot/imu/heading", 5, &QNode::headingCallBack, this);
-    motor_left_sub = node.subscribe("/robot/motor_left", 5, &QNode::motor_leftCallBack, this);
-    motor_right_sub = node.subscribe("/robot/motor_right", 5, &QNode::motor_rightCallBack, this);
-    gps_sub = node.subscribe("/robot/gps", 5, &QNode::gpsCallBack, this);
-    robot_connection_sub = node.subscribe("/robot/connection", 2, &QNode::robot_connectionCallBack, this);
-    battery_voltage_sub = node.subscribe("/robot/battery_voltage", 5, &QNode::battery_voltageCallBack, this);
-    pitch_sub = node.subscribe("/robot/imu/pitch", 5, &QNode::pitchCallBack, this);
-    roll_sub = node.subscribe("/robot/imu/roll", 5, &QNode::rollCallBack, this);
-
-    // publishing objects
-    motor_left_pub = node.advertise<std_msgs::Int64>("/robot/motor_left", 5);
-    motor_right_pub = node.advertise<std_msgs::Int64>("/robot/motor_right", 5);
-    safety_trigger_pub = node.advertise<std_msgs::Bool>("/robot/safety_master", 5);
-    path_array_pub = node.advertise<std_msgs::String>("/robot/path_array", 5);
-    gui_connection_pub = node.advertise<std_msgs::Bool>("/robot/gui_connection", 2);
-
-    start();
-    std::cout << "Successfully initialized node." << std::endl;
-    ros_master_on = true;
-    return true;
-}
-
-void QNode::run() {
-    // QThread function
-    ros::Rate loop_rate(10); // too fast loop rate crashed the GUI
-    std::cout << "Node is running." << std::endl;
-    while (ros::ok()){
-        this->no_connection_cycle_counter += 1;     // ros will constantly check if "robot/connection" topic is publishing true
-        std_msgs::Bool connection_msg;              // if it doesn't happend withink 10 iteration (which is less than a sec) it'll set itself as 'no connection'
-        connection_msg.data = true;                 // to avoid it, make a node on the robot that constantly publishes true to the specified topic
-        gui_connection_pub.publish(connection_msg); // additionally, the gui will publish true to "gui_connection" topic, to let the robot know it reads.
-                                                    // you can remove this section if you dont need your robot to know it has connection.
-        if (no_connection_cycle_counter > 10){
-            this->connection_robot = false;
-            Q_EMIT msgSubscribed();
-        }
-
-        ros::spinOnce();
-        loop_rate.sleep();
-    }
-    std::cout << "ROS shutdown, proceeding to close the gui." << std::endl;
-    //Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)
-}
-
-void QNode::safetyCallBack(const std_msgs::Bool::ConstPtr &msg){// done
+void QNode::m_Safety_Callback(const std_msgs::msg::Bool::SharedPtr msg){
     this->safety_master = msg->data;
-    Q_EMIT msgSubscribed(); // tells the "UpdateGUI" to update the new published value
+
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::headingCallBack(const std_msgs::Int64::ConstPtr &msg){
+void QNode::m_Heading_Callback(const std_msgs::msg::Int32::SharedPtr msg){
     this->heading = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
+
 }
 
-void QNode::motor_leftCallBack(const std_msgs::Int64::ConstPtr &msg){
+void QNode::m_MotorLeft_Callback(const std_msgs::msg::Int32::SharedPtr msg){
     this->motor_left = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::motor_rightCallBack(const std_msgs::Int64::ConstPtr &msg){
+void QNode::m_MotorRight_Callback(const std_msgs::msg::Int32::SharedPtr msg){
     this->motor_right = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::gpsCallBack(const sensor_msgs::NavSatFix::ConstPtr &msg){
-    this->latitude = msg->latitude;
+void QNode::m_GPS_Callback(const sensor_msgs::msg::NavSatFix::SharedPtr msg){
+    this->latitude = msg->altitude;
     this->longitude = msg->longitude;
-    this->sat_count = msg->status.service;
-    Q_EMIT msgSubscribed();
+    this->sat_count = msg->status.service; // not really what this value is used for, change to your liking
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::robot_connectionCallBack(const std_msgs::Bool::ConstPtr &msg){
-    this->no_connection_cycle_counter = 0;
+void QNode::m_RobotConnection_Callback(const std_msgs::msg::Bool::SharedPtr msg){
     this->connection_robot = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::battery_voltageCallBack(const std_msgs::Float64::ConstPtr &msg){
+void QNode::m_BatteryVoltage_Callback(const std_msgs::msg::Float32::SharedPtr msg){
     this->battery_voltage = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::pitchCallBack(const std_msgs::Int64::ConstPtr &msg){
+void QNode::m_Pitch_Callback(const std_msgs::msg::Int32::SharedPtr msg){
     this->pitch = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
 
-void QNode::rollCallBack(const std_msgs::Int64::ConstPtr &msg){
+void QNode::m_Roll_Callback(const std_msgs::msg::Int32::SharedPtr msg){
     this->roll = msg->data;
-    Q_EMIT msgSubscribed();
+    Q_EMIT this->msgSubscribed();
 }
-

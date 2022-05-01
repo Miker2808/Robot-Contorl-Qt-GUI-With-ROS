@@ -1,16 +1,11 @@
 #include "backend.h"
-#include <QObject>
-#include <QQuickItem>
+
+#include "iostream"
 
 BackEnd::BackEnd(int argc, char** argv, QQuickItem *item,QObject *parent) :
     QObject(parent), qnode(argc, argv)
 {
-    ros_initiated = qnode.init(); // initiates ROS using the init method.
-
-    if (!ros_initiated){
-        std::cout << "ROS is not online, closing" << std::endl;
-        QCoreApplication::quit();
-    }
+    std::cout << "Backend constructor..\n";
 
     // Lines of connections between signals and slots, connects qnode variables with backend. and vice versa!
     QObject::connect(&qnode, SIGNAL(msgSubscribed()), this, SLOT(updateGUI()));
@@ -57,16 +52,27 @@ BackEnd::BackEnd(int argc, char** argv, QQuickItem *item,QObject *parent) :
     setMapEnabled(false);
     setMapPanelOpacity(0);
 
+
+    // set variables that are on the panel and independent of state - used for visualization
+    setPanelHeadingVal(QString::number(qnode.heading));
+    setCompRotationVal(qnode.heading);
+    setPanelLatVal(QString::number(qnode.latitude));
+    setPanelLongVal(QString::number(qnode.longitude));
+    setPanelSatVal(QString::number(qnode.sat_count));
+    setPanelBatteryVal(QString::number(qnode.battery_voltage));
+    setPanelPitchVal(QString::number(qnode.pitch));
+    setPanelRollVal(QString::number(qnode.roll));
+
     // publish initiating values
     // engage safety on initiation
-    std_msgs::Bool safety_master_init;
+    std_msgs::msg::Bool safety_master_init = std_msgs::msg::Bool();
     safety_master_init.data = true;
-    qnode.safety_trigger_pub.publish(safety_master_init);
+    qnode.safetyTrigger_Pub->publish(safety_master_init);
     // reset driving path
-    selected_path_str = "[]";
-    std_msgs::String path_msg;
-    path_msg.data = selected_path_str;
-    qnode.path_array_pub.publish(path_msg);
+    std_msgs::msg::String path_msg = std_msgs::msg::String();
+    path_msg.data = "[]";
+    qnode.pathList_Pub->publish(path_msg);
+
 
 }
 
@@ -86,12 +92,12 @@ std::string BackEnd::fromQString(QString const &s)
 // method that simplifies the publishing to motors, as they apear frequently in the project.
 // creates two Int64 ros message objects, and publishes them through qnode.
 void BackEnd::publishToMotors(int motor_left, int motor_right){
-    std_msgs::Int64 motor_right_msg;
-    std_msgs::Int64 motor_left_msg;
+    std_msgs::msg::Int32 motor_right_msg;
+    std_msgs::msg::Int32 motor_left_msg;
     motor_right_msg.data = motor_right;
     motor_left_msg.data = motor_left;
-    qnode.motor_right_pub.publish(motor_right_msg);
-    qnode.motor_left_pub.publish(motor_left_msg);
+    qnode.motorRight_Pub->publish(motor_right_msg);
+    qnode.motorLeft_Pub->publish(motor_left_msg);
 }
 // function used to convert lat,long point to str in pythonic form.
 std::string BackEnd::LatLongStrPoint(std::string latitude, std::string longitude){
@@ -103,11 +109,10 @@ std::string BackEnd::LatLongStrPoint(std::string latitude, std::string longitude
     return point_str;
 }
 
-
-// Main gui updating component - every change in the qnode values (published values)
-// is triggering this method, which in return updates the values in the QML.
-// handles pretty much all that is happening in the GUI.
+// Slot is called after every time any ROS2 callback is called
+// Main usage is to update values in the QML frontend
 void BackEnd::updateGUI(){
+
     int right_motor_val = qnode.motor_right;
     int left_motor_val = qnode.motor_left;
     int right_motor_abs = std::abs(right_motor_val);
@@ -137,7 +142,7 @@ void BackEnd::updateGUI(){
         setLeftArc(motor_toLeftArc);
         setLeftGaugeColor("#4df6ff");
         setLeftGaugeOpacity(100);
-    }    
+    }
 
     if (right_motor_val >= 0 and right_motor_val <= 400){
         setRightGaugeVal(QString::number(right_motor_abs));
@@ -188,21 +193,10 @@ void BackEnd::updateGUI(){
     if (robot_connection == true){
         setPanelConnectVal("ONLINE");
     }
-    //disabled, so clicking "startRouteButton" will publish route even without safety and connnection
-    // enabling these lines, will make so the "startRoute Button" will not work unless connection is set as true and safety is false!
-//    if (robot_connection == false or safetyEngaged == true){
-//        setStartRouteButtonEnabled(false);
-//    }
-
-//    if (robot_connection == true and safetyEngaged == false){
-//        setStartRouteButtonEnabled(true);
-//    }
-
 
 }
 
 // button slots to make actions based on user buttons pressed.
-
 void BackEnd::onUpButton_Pressed(){
     publishToMotors(speedControlVal, speedControlVal);
 }
@@ -248,18 +242,17 @@ void BackEnd::onSafetyButton_Pressed(){
 
 void BackEnd::onSafetyButton_Released(){
     isSafetyButtonPressed = false;
-    std_msgs::Bool safety_trigger;
+    std_msgs::msg::Bool safety_trigger;
     if (qnode.safety_master == false){
         safety_trigger.data = true;
-        qnode.safety_trigger_pub.publish(safety_trigger);
+        qnode.safetyTrigger_Pub->publish(safety_trigger);
         setSafetyImageUrl("Safety-engaged.png");
     }
     else if (qnode.safety_master == true){
         safety_trigger.data = false;
-        qnode.safety_trigger_pub.publish(safety_trigger);
+        qnode.safetyTrigger_Pub->publish(safety_trigger);
         setSafetyImageUrl("Safety-disengaged.png");
     }
-
 
 }
 
@@ -329,13 +322,14 @@ void BackEnd::onCoordinateValueClicked(const QString &latitude, const QString &l
 }
 
 void BackEnd::onStartRouteButton_Clicked(){
-    std_msgs::String path_msg;
+    std_msgs::msg::String path_msg;
     path_msg.data = selected_path_str;
-    qnode.path_array_pub.publish(path_msg);
+    qnode.pathList_Pub->publish(path_msg);
     setButtonsEnabled(false);
     setButtonsOpacity(0);
 //    std::cout << "StartRouteClicked" << std::endl;
 }
+
 
 void BackEnd::onZeroPosButton_Clicked(){
 //    std::cout << "ZeroPosClicked" << std::endl;
@@ -345,9 +339,9 @@ void BackEnd::onCancelRouteButton_Clicked(){
     selected_path.clearPath();
     setGeoPath(selected_path);
     selected_path_str = "[]";
-    std_msgs::String path_msg;
+    std_msgs::msg::String path_msg;
     path_msg.data = selected_path_str;
-    qnode.path_array_pub.publish(path_msg);
+    qnode.pathList_Pub->publish(path_msg);
     if (qnode.safety_master == false) {
         setButtonsEnabled(true);
         setButtonsOpacity(100);
@@ -355,3 +349,4 @@ void BackEnd::onCancelRouteButton_Clicked(){
     publishToMotors(0, 0);
 
 }
+

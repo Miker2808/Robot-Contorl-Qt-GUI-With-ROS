@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import SixWheelBotQGUI 1.0
+import DesignerImports 1.0
 import QtQuick.Studio.Components 1.0
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.11
@@ -680,6 +680,7 @@ Rectangle {
         width: 150
         height: 150
         opacity: button_opacity / 100
+        visible: true
         source: "button-blue.png"
         antialiasing: true
         rotation: 90
@@ -1265,6 +1266,7 @@ Rectangle {
         x: -78
         y: 17
         opacity: startScreenOpacity / 100
+        visible: true
         anchors.fill: parent
         source: "StartScreen.png"
         anchors.bottomMargin: 0
@@ -1320,6 +1322,6 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.33000001311302185}D{i:72}
+    D{i:0;formeditorZoom:0.66}D{i:72}
 }
 ##^##*/
