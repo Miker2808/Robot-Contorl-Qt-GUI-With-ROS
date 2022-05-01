@@ -74,7 +74,7 @@ Please Note: ROS1 uses qmake while ROS2 uses cmake
 **Notes:**
 * The development works well with QtCreator no outside terminal for builds is necessary
 * Creating a package.xml and using "colcon build" is NOT necessary, GUI will work with the global bashrc sourced "setup.bash".
-* Incase you insist of building with a package, I kept a "package.xml" file ready for use.
+* Incase you insist of building with a package, I kept a "package.xml" file ready for use. Do not forget to uncomment the last line of CMakeLists.txt
 
 **Side Note: running QtCreator from a ROS sourced terminal will ease with environment variables**
 
