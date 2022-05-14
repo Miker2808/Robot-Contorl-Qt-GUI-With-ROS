@@ -1,6 +1,5 @@
 # Robot Control QT GUI With ROS2!
 
-## NEW! now QT5 Quick with ROS2 Foxy!!!
 ---
 ## Introduction
 This GUI now offers solution both for ROS1 Noetic and for ROS2 Foxy
