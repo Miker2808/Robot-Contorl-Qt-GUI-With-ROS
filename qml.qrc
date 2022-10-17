@@ -185,7 +185,6 @@
         <file>qml/Safety-disengaged.png</file>
         <file>qml/Safety-engaged-pressed.png</file>
         <file>qml/Safety-engaged.png</file>
-        <file>qml/SixWheelBotQGUI.qmlproject.qtds</file>
         <file>qml/StartScreen.png</file>
         <file>qml/UI-Overlay-blue.png</file>
         <file>qml/UI-Overlay-red.png</file>
