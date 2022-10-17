@@ -10,6 +10,22 @@ set(CMAKE_USE_PTHREADS_INIT 1)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 # end_of_fix
 
+if(NOT DEFINED ${QT_DIR})
+message(AUTHOR_WARNING "\n QT_DIR is not defined, meaning you attempt to run \"colcon build\" outside of QtCreator.\n Doing so will make \"CMAKE_PREFIX_PATH\" not have the path to Qt5Positioning
+which is necessary for this project. It is recommened to build this project through QtCreator (See README for details) alternatively, make sure you set the correct path leading to the Qt5Positioning folder, for example \"/home/cooluser/Qt/5.15.2/gcc_64/lib/cmake\".\n Cmake will attempt to define \"CMAKE_PREFIX_PATH\" manually, but it may fail, refer to line 21 of CMakeLists.txt.\n\n")
+
+# attempt custom QT_DIR
+set(QT_DIR_CUSTOM "$ENV{HOME}/Qt") # Path leading to Qt binaries,
+set(QT_VERSION_CUSTOM "5.15.2") # variable defining the version of Qt you are running.
+# attempt to append CMAKE_PREFIX_PATH
+list(APPEND CMAKE_PREFIX_PATH "${QT_DIR_CUSTOM}/${QT_VERSION_CUSTOM}/gcc_64/lib/cmake")
+
+else()
+message(WARNING QT_DIR)
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}/lib/cmake")
+endif()
+
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -20,7 +36,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-list(APPEND QML_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports")
+#list(APPEND QML_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/qml/imports")
 list(REMOVE_DUPLICATES QML_IMPORT_PATH)
 set(QML_IMPORT_PATH ${QML_IMPORT_PATH}
     CACHE STRING "extra qml import paths"
