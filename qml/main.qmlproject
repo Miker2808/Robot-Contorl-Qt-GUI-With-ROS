@@ -3,7 +3,7 @@
 import QmlProject 1.1
 
 Project {
-    mainFile: "SixWheelBotQGUI.qml"
+    mainFile: "main.qml"
 
     /* Include .qml, .js, and image files from current directory and subdirectories */
     QmlFiles {
@@ -41,5 +41,5 @@ Project {
     importPaths: [ "imports", "asset_imports" ]
 
     /* Required for deployment */
-    targetDirectory: "/opt/SixWheelBotQGUI"
+    targetDirectory: "/opt/main"
 }

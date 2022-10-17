@@ -1,6 +1,6 @@
 MetaInfo {
     Type {
-        name: "SixWheelBotQGUI.EventListSimulator"
+        name: "main.EventListSimulator"
         icon: ":/qtquickplugin/images/item-icon16.png"
 
         Hints {
